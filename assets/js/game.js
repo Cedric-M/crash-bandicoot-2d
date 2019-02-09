@@ -85,17 +85,17 @@ function create ()
     // });
     box = this.physics.add.group({
         key: 'box',
-         setXY: { x: 12, y: 2, stepX: 70 }
+         setXY: { x: 200, y: 2, stepX: 70 }
         // repeat: 11,
         // setXY: { x: 12, y: 0, stepX: 70 }
     });
     box_jump = this.physics.add.group({
         key: 'box_jump',
-         setXY: { x: 82, y: 2}
+         setXY: { x: 300, y: 2}
     });
     box_tnt = this.physics.add.group({
         key: 'box_tnt',
-         setXY: { x: 500, y: 2}
+         setXY: { x: 450, y: 2}
     });
 
 
@@ -120,8 +120,12 @@ function create ()
     this.physics.add.collider(box_tnt, platforms);
 
 
-    this.physics.add.overlap(player, stars, collectStar, null, this);
+    //this.physics.add.overlap(player, stars, collectStar, null, this);
     //this.physics.add.collider(player, bombs, hitBomb, null, this);
+
+    this.physics.add.overlap(player, box, collectBox, null, this);
+    this.physics.add.collider(player, box_jump, hitJump, null, this);
+    this.physics.add.collider(player, box_tnt, hitTnt, null, this);
 
 
 
@@ -212,14 +216,25 @@ function collectStar (player, star)
 
     }
 }
+function collectBox (player, box)
+{
+    box.disableBody(true, true);
 
-// function hitBomb (player, bomb)
-// {
-//     this.physics.pause();
+    //  Add and update the score
+    score += 10;
+    scoreText.setText('Apple: ' + score);
 
-//     player.setTint(0xff0000);
+}
+function hitTnt (player, bomb)
+{
+    this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameOver = true;
+}
 
-//     player.anims.play('default');
-
-//     gameOver = true;
-// }
+function hitJump (player, bomb)
+{
+    player.setVelocityY(-330);
+    player.anims.play('default');
+}
