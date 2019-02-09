@@ -17,6 +17,7 @@ var config = {
 };
 
 var player;
+var enemy;
 var stars;
 var boxes;
 var bombs;
@@ -25,6 +26,8 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
+
+var timeKeeper = 1000;
 
 //box
 var box;
@@ -46,6 +49,7 @@ function preload ()
     this.load.image('box', 'assets/img/box.png');
     this.load.image('box_jump', 'assets/img/box_jump.png');
     this.load.image('box_tnt', 'assets/img/box_tnt.png');
+    this.load.image('enemy', 'assets/img/enemy.png');
 }
 
 function create ()
@@ -63,7 +67,7 @@ function create ()
     //  Now let's create some ledges
     // platforms.create(600, 400, 'ground');
     // platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
+    //platforms.create(750, 220, 'ground');
     
 
     // The player and its settings
@@ -71,14 +75,11 @@ function create ()
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
-    player.setCollideWorldBounds(true);
-
-
+    enemy = this.physics.add.sprite(600, 525, 'enemy');
+    enemy.setCollideWorldBounds(true);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-
-    //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     // stars = this.physics.add.group({
     //     key: 'star',
     //      setXY: { x: 12, y: 0, stepX: 70 }
@@ -115,6 +116,8 @@ function create ()
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(enemy, platforms);
+    this.physics.add.collider(player, enemy, hitEnemy, null, this);
     //this.physics.add.collider(stars, platforms);
     //this.physics.add.collider(bombs, platforms);
 
@@ -167,6 +170,8 @@ function update ()
     {
         return;
     }
+    enemy.setVelocityX(-100);
+    enemy.setVelocityX(+100);
 
     if (cursors.left.isDown)
     {
@@ -220,12 +225,10 @@ function collectStar (player, star)
 function collectBox (player, box)
 {
     box.disableBody(true, true);
-
-    //  Add and update the score
     score += 10;
     scoreText.setText('Apple: ' + score);
-
 }
+
 function hitTnt (player, boxes)
 {
     this.physics.pause();
@@ -241,6 +244,13 @@ function hitJump (player, boxes)
 }
 
 function gameOver ()
+{
+    this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameOver = true;
+}
+function hitEnemy (player, enemy)
 {
     this.physics.pause();
     player.setTint(0xff0000);
