@@ -85,7 +85,8 @@ function create ()
     // });
     box = this.physics.add.group({
         key: 'box',
-         setXY: { x: 200, y: 2, stepX: 70 }
+        repeat: 1,
+         setXY: { x: 200, y: 2, stepX: 20 }
         // repeat: 11,
         // setXY: { x: 12, y: 0, stepX: 70 }
     });
@@ -185,7 +186,7 @@ function update ()
 
     if (cursors.up.isDown && player.body.touching.down)
     {
-        player.setVelocityY(-330);
+        player.setVelocityY(-230);
     }
 }
 
@@ -235,6 +236,14 @@ function hitTnt (player, bomb)
 
 function hitJump (player, bomb)
 {
-    player.setVelocityY(-330);
+    player.setVelocityY(-230);
     player.anims.play('default');
+}
+
+function gameOver ()
+{
+   this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameOver = true;
 }
