@@ -5,8 +5,8 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
-            debug: false
+            gravity: { y: 600 },
+            debug: true
         }
     },
     scene: {
@@ -71,6 +71,8 @@ function create ()
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
+    player.setCollideWorldBounds(true);
+
 
 
     //  Input Events
@@ -83,20 +85,20 @@ function create ()
     //     // repeat: 11,
     //     // setXY: { x: 12, y: 0, stepX: 70 }
     // });
-    box = this.physics.add.group({
+    box = this.physics.add.staticGroup({
         key: 'box',
-        repeat: 1,
-         setXY: { x: 200, y: 2, stepX: 20 }
+        repeat: 2,
+         setXY: { x: 200, y: 525, stepY: -23 }
         // repeat: 11,
         // setXY: { x: 12, y: 0, stepX: 70 }
     });
-    box_jump = this.physics.add.group({
+    box_jump = this.physics.add.staticGroup({
         key: 'box_jump',
-         setXY: { x: 300, y: 2}
+         setXY: { x: 300, y: 525}
     });
-    box_tnt = this.physics.add.group({
+    box_tnt = this.physics.add.staticGroup({
         key: 'box_tnt',
-         setXY: { x: 450, y: 2}
+         setXY: { x: 450, y: 525}
     });
 
 
@@ -119,6 +121,7 @@ function create ()
     this.physics.add.collider(box, platforms);
     this.physics.add.collider(box_jump, platforms);
     this.physics.add.collider(box_tnt, platforms);
+    this.physics.add.collider(box, box);
 
 
     //this.physics.add.overlap(player, stars, collectStar, null, this);
@@ -168,19 +171,16 @@ function update ()
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
-
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
-
         player.anims.play('right', true);
     }
     else
     {
         player.setVelocityX(0);
-
         player.anims.play('default');
     }
 
@@ -226,7 +226,7 @@ function collectBox (player, box)
     scoreText.setText('Apple: ' + score);
 
 }
-function hitTnt (player, bomb)
+function hitTnt (player, boxes)
 {
     this.physics.pause();
     player.setTint(0xff0000);
@@ -234,15 +234,15 @@ function hitTnt (player, bomb)
     gameOver = true;
 }
 
-function hitJump (player, bomb)
+function hitJump (player, boxes)
 {
-    player.setVelocityY(-230);
+    player.setVelocityY(-280);
     player.anims.play('default');
 }
 
 function gameOver ()
 {
-   this.physics.pause();
+    this.physics.pause();
     player.setTint(0xff0000);
     player.anims.play('default');
     gameOver = true;
