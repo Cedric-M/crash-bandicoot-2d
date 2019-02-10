@@ -2,6 +2,7 @@ var config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    backgroundColor: '#87cefa',
     physics: {
         default: 'arcade',
         arcade: {
@@ -30,15 +31,13 @@ var scoreText;
 var box;
 var box_jump;
 var box_tnt;
-var map;
+
+var textGameOver;
 
 function preload ()
 {
-    this.load.image('sky', 'assets/img/sky.png');
-    //this.cameras.main.setBackgroundColor('#87cefa');
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('star', 'assets/img/star.png');
-    //this.load.image('bomb', 'assets/img/bomb.png');
     this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 48 });
 
     this.load.image('box', 'assets/img/box.png');
@@ -49,8 +48,7 @@ function preload ()
 
 function create ()
 {
-    //  A simple background for our game
-    this.add.image(400, 300, 'sky');
+    textGameOver = this.add.text(350, 260);
 
     platforms = this.physics.add.staticGroup();
     boxes = this.physics.add.staticGroup();
@@ -126,7 +124,7 @@ function create ()
     this.physics.add.overlap(player, box, collectBox, null, this);
     this.physics.add.collider(player, box_jump, hitJump, null, this);
     this.physics.add.collider(player, box_tnt, hitTnt, null, this);
-
+    this.physics.add.collider
 
 
     //  Input Events
@@ -155,6 +153,7 @@ function create ()
         frameRate: 10,
         repeat: -1
     });
+
 }
 
 
@@ -187,6 +186,7 @@ function update ()
     {
         player.setVelocityY(-230);
     }
+    
 }
 
 function collectStar (player, star)
@@ -216,8 +216,17 @@ function collectStar (player, star)
 
     }
 }
+function gameOver (player, boxes){
+    console.log('Game Over!');
+    textGameOver.setText('GAME OVER');
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameOver = true;
+}
+
 function collectBox (player, box)
 {
+    console.log('collectBox');
     box.disableBody(true, true);
     score += 10;
     scoreText.setText('Apple: ' + score);
@@ -226,6 +235,8 @@ function collectBox (player, box)
 function hitTnt (player, boxes)
 {
     this.physics.pause();
+    console.log('Game Over!');
+    textGameOver.setText('GAME OVER');
     player.setTint(0xff0000);
     player.anims.play('default');
     gameOver = true;
@@ -237,13 +248,7 @@ function hitJump (player, boxes)
     player.anims.play('default');
 }
 
-function gameOver ()
-{
-    this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play('default');
-    gameOver = true;
-}
+
 function hitEnemy (player, enemy)
 {
     this.physics.pause();
