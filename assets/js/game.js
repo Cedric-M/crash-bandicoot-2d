@@ -229,11 +229,8 @@ function collectStar (player, star)
 
     }
 }
-function gameOver (player, boxes){
-    console.log('Game Over!');
+function gameEnd (player, boxes){
     textGameOver.setText('GAME OVER');
-    player.setTint(0xff0000);
-    player.anims.play('default');
     gameOver = true;
 }
 
@@ -248,11 +245,9 @@ function collectBox (player, box)
 function hitTnt (player, boxes)
 {
     this.physics.pause();
-    console.log('Game Over!');
-    textGameOver.setText('GAME OVER');
     player.setTint(0xff0000);
     player.anims.play('default');
-    gameOver = true;
+    gameEnd();
 }
 
 function hitJump (player, boxes)
