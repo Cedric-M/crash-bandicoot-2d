@@ -7,7 +7,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 600 },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -31,6 +31,8 @@ var scoreText;
 var box;
 var box_jump;
 var box_tnt;
+var consumable;
+var apple;
 
 var textGameOver;
 
@@ -39,7 +41,7 @@ function preload ()
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('star', 'assets/img/star.png');
     this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 48 });
-
+    this.load.image('apple', 'assets/img/apple.png');
     this.load.image('box', 'assets/img/box.png');
     this.load.image('box_jump', 'assets/img/box_jump.png');
     this.load.image('box_tnt', 'assets/img/box_tnt.png');
@@ -84,15 +86,26 @@ function create ()
         // repeat: 11,
         // setXY: { x: 12, y: 0, stepX: 70 }
     });
+    consumable = this.physics.add.staticGroup({
+        key: 'apple',
+        repeat: 1,
+         setXY: { x: 300, y: 450, stepY: -23 }
+        // repeat: 11,
+        // setXY: { x: 12, y: 0, stepX: 70 }
+    });
     box_jump = this.physics.add.staticGroup({
         key: 'box_jump',
          setXY: { x: 300, y: 525}
     });
+
     box_tnt = this.physics.add.staticGroup({
         key: 'box_tnt',
          setXY: { x: 450, y: 525}
     });
-
+    box_tnt = this.physics.add.staticGroup({
+        key: 'box_tnt',
+         setXY: { x: 200, y: 456}
+    });
 
     //boxes = this.physics.add.boxesGroup();
 
@@ -111,7 +124,7 @@ function create ()
     this.physics.add.collider(player, enemy, hitEnemy, null, this);
     //this.physics.add.collider(stars, platforms);
     //this.physics.add.collider(bombs, platforms);
-
+    this.physics.add.collider(consumable, platforms);
     this.physics.add.collider(box, platforms);
     this.physics.add.collider(box_jump, platforms);
     this.physics.add.collider(box_tnt, platforms);
@@ -120,7 +133,7 @@ function create ()
 
     //this.physics.add.overlap(player, stars, collectStar, null, this);
     //this.physics.add.collider(player, bombs, hitBomb, null, this);
-
+    this.physics.add.overlap(player, consumable, collectConsumable, null, this);
     this.physics.add.overlap(player, box, collectBox, null, this);
     this.physics.add.collider(player, box_jump, hitJump, null, this);
     this.physics.add.collider(player, box_tnt, hitTnt, null, this);
@@ -255,4 +268,12 @@ function hitEnemy (player, enemy)
     player.setTint(0xff0000);
     player.anims.play('default');
     gameOver = true;
+}
+
+function collectConsumable (apple, box)
+{
+    console.log('collectConsumable');
+    box.disableBody(true, true);
+    score += 6;
+    scoreText.setText('Apple: ' + score);
 }
