@@ -41,10 +41,10 @@ function preload ()
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('star', 'assets/img/star.png');
     this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.image('apple', 'assets/img/apple.png');
-    this.load.image('box', 'assets/img/box.png');
-    this.load.image('box_jump', 'assets/img/box_jump.png');
-    this.load.image('box_tnt', 'assets/img/box_tnt.png');
+    this.load.image('apple', 'assets/img/hd/apple.png');
+    this.load.image('box', 'assets/img/hd/box.png');
+    this.load.image('box_jump', 'assets/img/hd/box_jump.png');
+    this.load.image('box_tnt', 'assets/img/hd/box_tnt.png');
     this.load.image('enemy', 'assets/img/enemy.png');
 }
 
