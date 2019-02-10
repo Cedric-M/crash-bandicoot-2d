@@ -16,31 +16,26 @@ var config = {
     }
 };
 
+var game = new Phaser.Game(config);
+
 var player;
 var enemy;
 var stars;
 var boxes;
-var bombs;
 var platforms;
 var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
-
-var timeKeeper = 1000;
-
-//box
 var box;
 var box_jump;
 var box_tnt;
-
-
-
-var game = new Phaser.Game(config);
+var map;
 
 function preload ()
 {
     this.load.image('sky', 'assets/img/sky.png');
+    //this.cameras.main.setBackgroundColor('#87cefa');
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('star', 'assets/img/star.png');
     //this.load.image('bomb', 'assets/img/bomb.png');
@@ -57,8 +52,8 @@ function create ()
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
+    boxes = this.physics.add.staticGroup();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -78,8 +73,6 @@ function create ()
     enemy = this.physics.add.sprite(600, 525, 'enemy');
     enemy.setCollideWorldBounds(true);
 
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
     // stars = this.physics.add.group({
     //     key: 'star',
     //      setXY: { x: 12, y: 0, stepX: 70 }
@@ -136,7 +129,8 @@ function create ()
 
 
 
-
+    //  Input Events
+    cursors = this.input.keyboard.createCursorKeys();
 
 
     //_____________________________________________________________________________________
