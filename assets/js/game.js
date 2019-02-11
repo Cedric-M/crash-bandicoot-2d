@@ -244,10 +244,15 @@ function collectBox (player, box)
 
 function hitTnt (player, boxes)
 {
-    this.physics.pause();
-    player.setTint(0xff0000);
-    player.anims.play('default');
-    gameEnd();
+    setTimeout(() => {
+        //the Tnt explode after 3seconds
+        boxes.setTint(0xff0000);
+        //TODO if player is still near he die
+        this.physics.pause();
+        player.setTint(0xff0000);
+        player.anims.play('default');
+        gameEnd();
+    }, 3000);
 }
 
 function hitJump (player, boxes)
