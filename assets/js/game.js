@@ -27,6 +27,7 @@ var platforms;
 var cursors;
 var score = 0;
 var gameOver = false;
+var moveRight = true;
 var scoreText;
 var box;
 var box_jump;
@@ -176,9 +177,23 @@ function update ()
     {
         return;
     }
-    enemy.setVelocityX(-100);
-    enemy.setVelocityX(+100);
-
+    if (moveRight == true)
+    {
+        console.log('moveRight');
+        setTimeout(() => {
+            enemy.setVelocityX(+50);
+            moveRight = false
+        }, 2000);
+        
+    }
+    else if (moveRight == false)
+    {
+        console.log('moveLeft');
+        setTimeout(() => {
+            enemy.setVelocityX(-50);
+        }, 2000);
+        moveRight = true
+    }
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
@@ -229,16 +244,20 @@ function collectStar (player, star)
 
     }
 }
-function gameEnd (player, boxes){
-    textGameOver.setText('GAME OVER');
-    gameOver = true;
-}
 
 function collectBox (player, box)
-{
+{   
     console.log('collectBox');
     box.disableBody(true, true);
-    score += 10;
+    score += 5;
+    scoreText.setText('Apple: ' + score);
+}
+
+function collectConsumable (apple, box)
+{
+    console.log('collectConsumable');
+    box.disableBody(true, true);
+    score += 1;
     scoreText.setText('Apple: ' + score);
 }
 
@@ -261,19 +280,15 @@ function hitJump (player, boxes)
     player.anims.play('default');
 }
 
-
 function hitEnemy (player, enemy)
 {
     this.physics.pause();
     player.setTint(0xff0000);
     player.anims.play('default');
-    gameOver = true;
+    gameEnd();
 }
 
-function collectConsumable (apple, box)
-{
-    console.log('collectConsumable');
-    box.disableBody(true, true);
-    score += 6;
-    scoreText.setText('Apple: ' + score);
+function gameEnd (player, boxes){
+    textGameOver.setText('GAME OVER');
+    gameOver = true;
 }
