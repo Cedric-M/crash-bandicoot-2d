@@ -40,11 +40,11 @@ function preload ()
 {
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('star', 'assets/img/star.png');
-    this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.image('apple', 'assets/img/hd/apple.png');
-    this.load.image('box', 'assets/img/hd/box.png');
-    this.load.image('box_jump', 'assets/img/hd/box_jump.png');
-    this.load.image('box_tnt', 'assets/img/hd/box_tnt.png');
+    this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 45 });
+    this.load.image('apple', 'assets/img/apple.png');
+    this.load.image('box', 'assets/img/box.png');
+    this.load.image('box_jump', 'assets/img/box_jump.png');
+    this.load.image('box_tnt', 'assets/img/box_tnt.png');
     this.load.image('enemy', 'assets/img/enemy.png');
 }
 
@@ -85,7 +85,7 @@ function create ()
         key: 'box_tnt',
          setXY: { x: 450, y: 525}
     });
-    box_tnt = this.physics.add.staticGroup({
+    box_tnt2 = this.physics.add.staticGroup({
         key: 'box_tnt',
          setXY: { x: 200, y: 456}
     });
@@ -200,15 +200,12 @@ function collectConsumable (apple, box)
 
 function hitTnt (player, boxes)
 {
-    setTimeout(() => {
-        //the Tnt explode after 3seconds
         boxes.setTint(0xff0000);
         //TODO if player is still near he die
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play('default');
         gameEnd();
-    }, 3000);
 }
 
 function hitJump (player, boxes)
