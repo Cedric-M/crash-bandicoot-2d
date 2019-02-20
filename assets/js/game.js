@@ -21,7 +21,6 @@ var game = new Phaser.Game(config);
 
 var player;
 var enemy;
-var stars;
 var boxes;
 var platforms;
 var cursors;
@@ -60,39 +59,22 @@ function create ()
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-    //  Now let's create some ledges
-    // platforms.create(600, 400, 'ground');
-    // platforms.create(50, 250, 'ground');
-    //platforms.create(750, 220, 'ground');
-    
-
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'crash');
-    player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
     enemy = this.physics.add.sprite(600, 525, 'enemy');
     enemy.setCollideWorldBounds(true);
 
-    // stars = this.physics.add.group({
-    //     key: 'star',
-    //      setXY: { x: 12, y: 0, stepX: 70 }
-    //     // repeat: 11,
-    //     // setXY: { x: 12, y: 0, stepX: 70 }
-    // });
     box = this.physics.add.staticGroup({
         key: 'box',
         repeat: 2,
          setXY: { x: 200, y: 525, stepY: -23 }
-        // repeat: 11,
-        // setXY: { x: 12, y: 0, stepX: 70 }
     });
     consumable = this.physics.add.staticGroup({
         key: 'apple',
         repeat: 1,
          setXY: { x: 300, y: 450, stepY: -23 }
-        // repeat: 11,
-        // setXY: { x: 12, y: 0, stepX: 70 }
     });
     box_jump = this.physics.add.staticGroup({
         key: 'box_jump',
@@ -108,42 +90,27 @@ function create ()
          setXY: { x: 200, y: 456}
     });
 
-    //boxes = this.physics.add.boxesGroup();
-
-    // stars.children.iterate(function (child) {
-    //     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    // });
-
-    //bombs = this.physics.add.group();
-
     //  The score
     scoreText = this.add.text(16, 16, 'Apple: 0', { fontSize: '32px', fill: '#000' });
 
-    //  Collide the player and the stars with the platforms
+    //  Collide the player and the boxes with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(enemy, platforms);
     this.physics.add.collider(player, enemy, hitEnemy, null, this);
-    //this.physics.add.collider(stars, platforms);
-    //this.physics.add.collider(bombs, platforms);
+
     this.physics.add.collider(consumable, platforms);
     this.physics.add.collider(box, platforms);
     this.physics.add.collider(box_jump, platforms);
     this.physics.add.collider(box_tnt, platforms);
     this.physics.add.collider(box, box);
 
-
-    //this.physics.add.overlap(player, stars, collectStar, null, this);
-    //this.physics.add.collider(player, bombs, hitBomb, null, this);
     this.physics.add.overlap(player, consumable, collectConsumable, null, this);
     this.physics.add.overlap(player, box, collectBox, null, this);
     this.physics.add.collider(player, box_jump, hitJump, null, this);
     this.physics.add.collider(player, box_tnt, hitTnt, null, this);
-    this.physics.add.collider
-
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-
 
     //_____________________________________________________________________________________
     // Player moves
@@ -167,9 +134,7 @@ function create ()
         frameRate: 10,
         repeat: -1
     });
-
 }
-
 
 function update ()
 {
@@ -215,34 +180,6 @@ function update ()
         player.setVelocityY(-230);
     }
     
-}
-
-function collectStar (player, star)
-{
-    star.disableBody(true, true);
-
-    //  Add and update the score
-    score += 10;
-    scoreText.setText('Apple: ' + score);
-
-    if (stars.countActive(true) === 0)
-    {
-        //  A new batch of stars to collect
-        stars.children.iterate(function (child) {
-
-            child.enableBody(true, child.x, 0, true, true);
-
-        });
-
-        // var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-        // var bomb = bombs.create(x, 16, 'bomb');
-        // bomb.setBounce(1);
-        // bomb.setCollideWorldBounds(true);
-        // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        // bomb.allowGravity = false;
-
-    }
 }
 
 function collectBox (player, box)
