@@ -152,20 +152,17 @@ function update ()
     }
     if (moveRight == true)
     {
-        //console.log('moveRight');
         setTimeout(() => {
             enemy.setVelocityX(+50);
             moveRight = false
-        }, 2000);
-        
+        }, 2000);  
     }
     else if (moveRight == false)
     {
-        //console.log('moveLeft');
         setTimeout(() => {
             enemy.setVelocityX(-50);
+            moveRight = true
         }, 2000);
-        moveRight = true
     }
     if (cursors.left.isDown)
     {
