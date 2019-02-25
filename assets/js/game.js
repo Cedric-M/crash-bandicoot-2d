@@ -32,6 +32,7 @@ var scoreText;
 var box;
 var box_jump;
 var box_tnt;
+var box_nitro;
 var consumable;
 var apple;
 
@@ -88,14 +89,9 @@ function create ()
          setXY: { x: 300, y: 525}
     });
 
-    box_tnt = this.physics.add.staticGroup({
-        key: 'box_tnt',
-         setXY: { x: 460, y: 525}
-    });
-    box_tnt2 = this.physics.add.staticGroup({
-        key: 'box_tnt',
-         setXY: { x: 200, y: 456}
-    });
+    box_tnt = this.physics.add.staticGroup();
+    box_tnt.create(460, 525, 'box_tnt').refreshBody();
+    box_tnt.create(200, 456, 'box_tnt').refreshBody();
 
     //  The score
     scoreText = this.add.text(16, 16, 'Apple: 0', { fontSize: '32px', fill: '#000' });
@@ -205,12 +201,13 @@ function collectConsumable (apple, box)
 
 function hitTnt (player, boxes)
 {
-        boxes.setTint(0xff0000);
-        //TODO if player is still near he die
-        this.physics.pause();
-        player.setTint(0xff0000);
-        player.anims.play('default');
-        gameEnd();
+    console.log('BOOOM');
+    boxes.setTint(0xff0000);
+    //TODO if player is still near he die
+    this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameEnd();
 }
 
 function hitJump (player, boxes)
