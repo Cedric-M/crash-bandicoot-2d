@@ -28,15 +28,22 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var moveRight = true;
+
 var scoreText;
+var timeText;
+var rulestext;
+
 var box;
 var box_jump;
 var box_tnt;
 var box_nitro;
 var consumable;
 var apple;
+var checkpoint;
 
 var textGameOver;
+
+var i;
 
 function preload ()
 {
@@ -50,6 +57,7 @@ function preload ()
     this.load.image('box_tnt', 'assets/img/box_tnt.png');
     this.load.image('enemy', 'assets/img/enemy.png');
     this.load.image('spades', 'assets/img/void.png');
+    this.load.image('checkpoint', 'assets/img/checkpoint.png');
 }
 
 function create ()
@@ -59,6 +67,7 @@ function create ()
     platforms = this.physics.add.staticGroup();
     spades = this.physics.add.staticGroup();
     boxes = this.physics.add.staticGroup();
+    checkpoint = this.physics.add.staticGroup();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -66,6 +75,7 @@ function create ()
     platforms.create(987, 568, 'ground').setScale(2).refreshBody();
     platforms.create(460, 568, 'ground_little').setScale(2).refreshBody();
     spades.create(400, 600, 'spades').setScale(2).refreshBody();
+    checkpoint.create(782, 534, 'checkpoint').refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'crash');
@@ -95,6 +105,8 @@ function create ()
 
     //  The score
     scoreText = this.add.text(16, 16, 'Apple: 0', { fontSize: '32px', fill: '#000' });
+    timeText = this.add.text(630, 16, 'Time: 0', { fontSize: '32px', fill: '#000' });
+    rulesText = this.add.text(320, 16, 'Catch all Apples!', { fontSize: '16px', fill: '#000' });
 
     //  Collide the player and the boxes with the platforms
     this.physics.add.collider(player, platforms);
@@ -112,6 +124,7 @@ function create ()
     this.physics.add.collider(player, box_jump, hitJump, null, this);
     this.physics.add.collider(player, box_tnt, hitTnt, null, this);
     this.physics.add.collider(player, spades, hitSpades, null, this);
+    this.physics.add.collider(player, checkpoint, playerWin, null, this);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -146,6 +159,11 @@ function update ()
     {
         return;
     }
+
+    // setTimeout(() => {
+    //     timeText.setText('Time: ' + 1);
+    // }, 1000);  
+
     if (moveRight == true)
     {
         setTimeout(() => {
@@ -180,7 +198,6 @@ function update ()
     {
         player.setVelocityY(-230);
     }
-    
 }
 
 function collectBox (player, box)
@@ -201,7 +218,7 @@ function collectConsumable (apple, box)
 
 function hitTnt (player, boxes)
 {
-    console.log('BOOOM');
+    console.log('hitTNT');
     boxes.setTint(0xff0000);
     //TODO if player is still near he die
     this.physics.pause();
@@ -238,4 +255,15 @@ function hitSpades (player, spades)
 function gameEnd (player, boxes){
     textGameOver.setText('GAME OVER');
     gameOver = true;
+}
+
+function playerWin (player, ckeckpoint){
+    if (score > 16)
+    {
+        this.physics.pause();
+        player.anims.play('default');
+        textGameOver.setText('WELL DONE, YOU WON!');
+        gameOver = true;
+    }
+
 }
