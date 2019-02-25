@@ -23,6 +23,7 @@ var player;
 var enemy;
 var boxes;
 var platforms;
+var spades;
 var cursors;
 var score = 0;
 var gameOver = false;
@@ -39,13 +40,15 @@ var textGameOver;
 function preload ()
 {
     this.load.image('ground', 'assets/img/platform.png');
+    this.load.image('ground_little', 'assets/img/platform_little.png');
     this.load.image('star', 'assets/img/star.png');
-    this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 32, frameHeight: 45 });
+    this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 24, frameHeight: 45 });
     this.load.image('apple', 'assets/img/apple.png');
     this.load.image('box', 'assets/img/box.png');
     this.load.image('box_jump', 'assets/img/box_jump.png');
     this.load.image('box_tnt', 'assets/img/box_tnt.png');
     this.load.image('enemy', 'assets/img/enemy.png');
+    this.load.image('spades', 'assets/img/void.png');
 }
 
 function create ()
@@ -53,11 +56,15 @@ function create ()
     textGameOver = this.add.text(350, 260);
 
     platforms = this.physics.add.staticGroup();
+    spades = this.physics.add.staticGroup();
     boxes = this.physics.add.staticGroup();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    platforms.create(-60, 568, 'ground').setScale(2).refreshBody();
+    platforms.create(987, 568, 'ground').setScale(2).refreshBody();
+    platforms.create(460, 568, 'ground_little').setScale(2).refreshBody();
+    spades.create(400, 600, 'spades').setScale(2).refreshBody();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'crash');
@@ -108,6 +115,7 @@ function create ()
     this.physics.add.overlap(player, box, collectBox, null, this);
     this.physics.add.collider(player, box_jump, hitJump, null, this);
     this.physics.add.collider(player, box_tnt, hitTnt, null, this);
+    this.physics.add.collider(player, spades, hitSpades, null, this);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -144,7 +152,7 @@ function update ()
     }
     if (moveRight == true)
     {
-        console.log('moveRight');
+        //console.log('moveRight');
         setTimeout(() => {
             enemy.setVelocityX(+50);
             moveRight = false
@@ -153,7 +161,7 @@ function update ()
     }
     else if (moveRight == false)
     {
-        console.log('moveLeft');
+        //console.log('moveLeft');
         setTimeout(() => {
             enemy.setVelocityX(-50);
         }, 2000);
@@ -210,6 +218,7 @@ function hitTnt (player, boxes)
 
 function hitJump (player, boxes)
 {
+    console.log('hitJump');
     player.setVelocityY(-280);
     player.anims.play('default');
 }
@@ -221,6 +230,16 @@ function hitEnemy (player, enemy)
     player.anims.play('default');
     gameEnd();
 }
+
+function hitSpades (player, spades)
+{
+    console.log('hitSpades');
+    this.physics.pause();
+    player.setTint(0xff0000);
+    player.anims.play('default');
+    gameEnd();
+}
+
 
 function gameEnd (player, boxes){
     textGameOver.setText('GAME OVER');
