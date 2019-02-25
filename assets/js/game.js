@@ -32,6 +32,8 @@ var moveRight = true;
 var scoreText;
 var timeText;
 var rulestext;
+var textGameMessage;
+var textGameMessageF5;
 
 var box;
 var box_jump;
@@ -41,7 +43,7 @@ var consumable;
 var apple;
 var checkpoint;
 
-var textGameOver;
+
 
 var i;
 
@@ -62,8 +64,6 @@ function preload ()
 
 function create ()
 {
-    textGameOver = this.add.text(350, 260);
-
     platforms = this.physics.add.staticGroup();
     spades = this.physics.add.staticGroup();
     boxes = this.physics.add.staticGroup();
@@ -103,10 +103,13 @@ function create ()
     box_tnt.create(460, 525, 'box_tnt').refreshBody();
     box_tnt.create(200, 456, 'box_tnt').refreshBody();
 
-    //  The score
+    //  Display texts
     scoreText = this.add.text(16, 16, 'Apple: 0', { fontSize: '32px', fill: '#000' });
     timeText = this.add.text(630, 16, 'Time: 0', { fontSize: '32px', fill: '#000' });
     rulesText = this.add.text(320, 16, 'Catch all Apples!', { fontSize: '16px', fill: '#000' });
+
+    textGameMessage = this.add.text(350, 260);
+    textGameMessageF5 = this.add.text(300, 280);
 
     //  Collide the player and the boxes with the platforms
     this.physics.add.collider(player, platforms);
@@ -253,7 +256,8 @@ function hitSpades (player, spades)
 
 
 function gameEnd (player, boxes){
-    textGameOver.setText('GAME OVER');
+    textGameMessage.setText('GAME OVER');
+    textGameMessageF5.setText('PRESS F5 TO RESTART');
     gameOver = true;
 }
 
@@ -262,7 +266,7 @@ function playerWin (player, ckeckpoint){
     {
         this.physics.pause();
         player.anims.play('default');
-        textGameOver.setText('WELL DONE, YOU WON!');
+        textGameMessage.setText('WELL DONE, YOU WON!');
         gameOver = true;
     }
 
