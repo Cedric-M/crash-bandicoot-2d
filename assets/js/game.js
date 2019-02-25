@@ -83,7 +83,7 @@ function create ()
 
     box_tnt = this.physics.add.staticGroup({
         key: 'box_tnt',
-         setXY: { x: 450, y: 525}
+         setXY: { x: 460, y: 525}
     });
     box_tnt2 = this.physics.add.staticGroup({
         key: 'box_tnt',
