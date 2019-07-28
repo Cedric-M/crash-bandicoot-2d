@@ -45,7 +45,6 @@ var box_nitro;
 var consumable;
 var apple;
 
- 
 // Loading Assets. 
 // Phaser will automatically look for this function when it starts and load anything defined within it.
 function preload ()
@@ -58,11 +57,10 @@ function preload ()
     this.load.image('box_tnt', 'assets/img/hd/box_tnt.png');
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('ground_little', 'assets/img/platform_little.png');
-    this.load.spritesheet('crash', 'assets/img/hd/crash.png', { frameWidth: 24, frameHeight: 45 });
+    this.load.spritesheet('crash', 'assets/img/hd/crash.png', { frameWidth: 32, frameHeight: 45 });
     this.load.image('enemy', 'assets/img/enemy.png');
     this.load.image('spades', 'assets/img/void.png');
     this.load.image('checkpoint', 'assets/img/checkpoint.png');
-
 }
 
 //create function will create all elements we loaded on the preload function, display, and set property and collision to them.
