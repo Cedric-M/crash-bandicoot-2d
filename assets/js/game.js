@@ -51,14 +51,14 @@ var apple;
 function preload ()
 {
     //note: if you wanna use hd texture pack just use the following example with "hd" and comment the old line.
-    //this.load.image('box', 'assets/img/hd/box.png');
-    this.load.image('box', 'assets/img/box.png');
-    this.load.image('apple', 'assets/img/apple.png');
-    this.load.image('box_jump', 'assets/img/box_jump.png');
-    this.load.image('box_tnt', 'assets/img/box_tnt.png');
+    this.load.image('box', 'assets/img/hd/box.png');
+    //this.load.image('box', 'assets/img/box.png');
+    this.load.image('apple', 'assets/img/hd/apple.png');
+    this.load.image('box_jump', 'assets/img/hd/box_jump.png');
+    this.load.image('box_tnt', 'assets/img/hd/box_tnt.png');
     this.load.image('ground', 'assets/img/platform.png');
     this.load.image('ground_little', 'assets/img/platform_little.png');
-    this.load.spritesheet('crash', 'assets/img/crash.png', { frameWidth: 24, frameHeight: 45 });
+    this.load.spritesheet('crash', 'assets/img/hd/crash.png', { frameWidth: 24, frameHeight: 45 });
     this.load.image('enemy', 'assets/img/enemy.png');
     this.load.image('spades', 'assets/img/void.png');
     this.load.image('checkpoint', 'assets/img/checkpoint.png');
